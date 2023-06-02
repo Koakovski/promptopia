@@ -1,10 +1,22 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
+import { getProviders } from "next-auth/react";
 
 export const Nav: FC = () => {
+    const [providers, setProviders] = useState<any>(null);
     const isUserLogged = true;
+
+    useEffect(() => {
+        const setProvidersHandler = async () => {
+            const response = await getProviders();
+            console.log(response);
+            setProviders(response);
+        };
+
+        /*  setProvidersHandler(); */
+    }, []);
 
     return (
         <nav className="flex-between w-full mb-16 pt-3">
@@ -18,6 +30,7 @@ export const Nav: FC = () => {
                 />
                 <p className="logo_text">Promptopia</p>
             </Link>
+
             {/* Desktop Navigation */}
             <div className="sm:flex hidden">
                 {isUserLogged && (
@@ -30,7 +43,7 @@ export const Nav: FC = () => {
                         </button>
                         <Link href="/profile">
                             <Image
-                                src="/assets/images/profile.svg"
+                                src="/assets/images/logo.svg"
                                 alt="profile"
                                 width={37}
                                 height={37}
@@ -39,6 +52,17 @@ export const Nav: FC = () => {
                         </Link>
                     </div>
                 )}
+                {providers &&
+                    Object.values(providers).map((provider: any) => (
+                        <button
+                            type="button"
+                            key={provider.name}
+                            onClick={() => console.log("sigIn(provider.id)")}
+                            className="btn_black"
+                        >
+                            Sign In
+                        </button>
+                    ))}
             </div>
         </nav>
     );
