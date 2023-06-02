@@ -2,11 +2,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import { FC, useEffect, useState } from "react";
-import { getProviders } from "next-auth/react";
+import { signIn, signOut, getProviders } from "next-auth/react";
 
 export const Nav: FC = () => {
     const [providers, setProviders] = useState<any>(null);
-    const isUserLogged = true;
+    const [toogleDropdown, setToogleDropdown] = useState<boolean>(false);
+    const isUserLoggedIn = true;
 
     useEffect(() => {
         const setProvidersHandler = async () => {
@@ -33,12 +34,16 @@ export const Nav: FC = () => {
 
             {/* Desktop Navigation */}
             <div className="sm:flex hidden">
-                {isUserLogged && (
+                {isUserLoggedIn && (
                     <div className="flex gap-3 md:gap-5">
                         <Link href="/create-prompt" className="black_btn">
-                            Create post
+                            Create Post
                         </Link>
-                        <button type="button" onClick={() => {}} className="outline_btn">
+                        <button
+                            type="button"
+                            onClick={() => signOut()}
+                            className="outline_btn"
+                        >
                             Sign Out
                         </button>
                         <Link href="/profile">
@@ -52,17 +57,78 @@ export const Nav: FC = () => {
                         </Link>
                     </div>
                 )}
-                {providers &&
-                    Object.values(providers).map((provider: any) => (
-                        <button
-                            type="button"
-                            key={provider.name}
-                            onClick={() => console.log("sigIn(provider.id)")}
-                            className="btn_black"
-                        >
-                            Sign In
-                        </button>
-                    ))}
+                {providers && (
+                    <>
+                        {Object.values(providers).map((provider: any) => (
+                            <button
+                                type="button"
+                                key={provider.name}
+                                onClick={() => signIn(provider.id)}
+                                className="btn_black"
+                            >
+                                Sign In
+                            </button>
+                        ))}
+                    </>
+                )}
+            </div>
+
+            {/* Desktop Navigation */}
+            <div className="sm:hidden flex relative">
+                {isUserLoggedIn && (
+                    <div className="flex">
+                        <Image
+                            src="/assets/images/logo.svg"
+                            alt="profile"
+                            width={37}
+                            height={37}
+                            className="rounded-full"
+                            onClick={() => setToogleDropdown((prevState) => !prevState)}
+                        />
+                        {toogleDropdown && (
+                            <div className="dropdown">
+                                <Link
+                                    href="/profile"
+                                    className="dropdown_link"
+                                    onClick={() => setToogleDropdown(false)}
+                                >
+                                    My Profile
+                                </Link>
+                                <Link
+                                    href="/profile"
+                                    className="dropdown_link"
+                                    onClick={() => setToogleDropdown(false)}
+                                >
+                                    Create Post
+                                </Link>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setToogleDropdown(false);
+                                        signOut();
+                                    }}
+                                    className="mt-5 w-full black_btn"
+                                >
+                                    Sign Out
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                )}
+                {!isUserLoggedIn && (
+                    <>
+                        {Object.values(providers).map((provider: any) => (
+                            <button
+                                type="button"
+                                key={provider.name}
+                                onClick={() => signIn(provider.id)}
+                                className="btn_black"
+                            >
+                                Sign In
+                            </button>
+                        ))}
+                    </>
+                )}
             </div>
         </nav>
     );
