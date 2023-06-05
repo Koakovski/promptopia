@@ -22,7 +22,6 @@ export const Nav: FC = () => {
     useEffect(() => {
         const setProvidersHandler = async () => {
             const response = await getProviders();
-            console.log(response);
             setProviders(response);
         };
 

@@ -30,11 +30,11 @@ const handler = NextAuth({
         },
         async signIn({ profile }) {
             try {
-                if (!profile || !profile.email || !profile.image || !profile.name) {
+                if (!profile || !profile.email || !profile.picture || !profile.name) {
                     return false;
                 }
 
-                const databaseUser = prisma.user.findFirst({
+                const databaseUser = await prisma.user.findFirst({
                     where: {
                         email: profile.email,
                     },
@@ -43,11 +43,11 @@ const handler = NextAuth({
                 if (!databaseUser) {
                     const formatedUsername = profile.name.replace(" ", "").toLowerCase();
 
-                    prisma.user.create({
+                    await prisma.user.create({
                         data: {
                             email: profile.email,
                             username: formatedUsername,
-                            image: profile.image,
+                            image: profile.picture,
                         },
                     });
                 }
