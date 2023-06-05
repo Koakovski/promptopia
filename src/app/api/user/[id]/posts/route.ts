@@ -4,20 +4,26 @@ import { NextApiHandler } from "next";
 const prisma = new PrismaClient();
 
 export const GET: NextApiHandler = async (_, { params }) => {
-    const { id } = params;
+    try {
+        const { id } = params;
 
-    const userPosts: any[] = await prisma.post.findMany({
-        where: {
-            author: {
-                id: id as string,
+        const userPosts = await prisma.post.findMany({
+            where: {
+                author: {
+                    id: id as string,
+                },
             },
-        },
-        include: {
-            author: true,
-        },
-    });
+            include: {
+                author: true,
+            },
+        });
 
-    return new Response(JSON.stringify(userPosts), {
-        status: 200,
-    });
+        return new Response(JSON.stringify(userPosts), {
+            status: 200,
+        });
+    } catch (error) {
+        return new Response("Fail", {
+            status: 500,
+        });
+    }
 };

@@ -4,9 +4,9 @@ import { NextApiHandler } from "next";
 const prisma = new PrismaClient();
 
 export const POST: NextApiHandler = async (req) => {
-    const { authorId, prompt, tag } = await req.json();
-
     try {
+        const { authorId, prompt, tag } = await req.json();
+
         const createdPost = await prisma.post.create({
             data: {
                 prompt,
