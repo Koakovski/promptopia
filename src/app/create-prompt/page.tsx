@@ -1,7 +1,7 @@
 "use client";
 
 import { Form } from "@components";
-import { PostModel } from "@models";
+import { PostData } from "@models";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
@@ -10,7 +10,7 @@ const CreatePromptPage = () => {
     const router = useRouter();
 
     const [isSubmting, setIsSubmeting] = useState(false);
-    const [post, setPost] = useState<PostModel>({ id: "", prompt: "", tag: "" });
+    const [post, setPost] = useState<PostData>({ prompt: "", tag: "" });
     const { data: session } = useSession();
 
     const createPrompt = async (event: FormEvent<HTMLFormElement>) => {
@@ -21,7 +21,7 @@ const CreatePromptPage = () => {
             const response = await fetch("/api/prompt/new", {
                 method: "POST",
                 body: JSON.stringify({
-                    userId: session?.user?.id,
+                    authorId: session?.user?.id,
                     prompt: post.prompt,
                     tag: post.tag,
                 }),

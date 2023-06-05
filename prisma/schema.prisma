@@ -15,4 +15,14 @@ model User {
   email    String @unique
   username String
   image    String
+  posts    Post[]
+}
+
+model Post {
+  id     String @id @default(uuid())
+  prompt String
+  tag    String
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id])
 }

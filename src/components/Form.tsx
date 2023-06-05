@@ -1,11 +1,11 @@
-import { PostModel } from "@models";
+import { PostData } from "@models";
 import Link from "next/link";
 import { ChangeEvent, Dispatch, FC, FormEvent, SetStateAction } from "react";
 
 interface FormProps {
     type: "Create";
-    post: PostModel;
-    setPost: Dispatch<SetStateAction<PostModel>>;
+    post: PostData;
+    setPost: Dispatch<SetStateAction<PostData>>;
     isSubmiting: boolean;
     handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
 }
@@ -20,14 +20,14 @@ export const Form: FC<FormProps> = ({
     const setPrompt = (event: ChangeEvent<HTMLTextAreaElement>) => {
         setPost((prevState) => ({
             ...prevState,
-            prompt: event.currentTarget.value,
+            prompt: event.target.value,
         }));
     };
 
     const setTag = (event: ChangeEvent<HTMLInputElement>) => {
         setPost((prevState) => ({
             ...prevState,
-            tag: event.currentTarget.value,
+            tag: event.target.value,
         }));
     };
 
