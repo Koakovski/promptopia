@@ -31,7 +31,6 @@ const CreatePromptPage = () => {
                 router.push("/");
             }
         } catch (error) {
-            console.log(error);
         } finally {
             setIsSubmeting(false);
         }

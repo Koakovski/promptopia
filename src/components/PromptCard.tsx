@@ -1,17 +1,27 @@
 "use client";
 import { PostModel } from "@models";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { FC, useState } from "react";
 
 interface PromptCardProps {
     post: PostModel;
     handleTagClick?: (tag: string) => void;
-    handleEdit: () => void;
-    handledelete: () => void;
+    handleEdit?: () => void;
+    handleDelete?: () => void;
 }
 
-export const PromptCard: FC<PromptCardProps> = ({ post, handleTagClick }) => {
+export const PromptCard: FC<PromptCardProps> = ({
+    post,
+    handleTagClick,
+    handleEdit,
+    handleDelete,
+}) => {
     const [copiedValue, setCopiedValue] = useState<string>("");
+
+    const { data: session } = useSession();
+    const pathName = usePathname();
 
     const handleCopy = () => {
         setCopiedValue(post.prompt);
@@ -63,6 +73,22 @@ export const PromptCard: FC<PromptCardProps> = ({ post, handleTagClick }) => {
             >
                 {post.tag}
             </p>
+            {session?.user?.id === post.author.id && pathName === "/profile" && (
+                <div className="mt-5 flex-center gap-4 border-t border-gray-100 pt-3">
+                    <p
+                        className="font-inter text-sm green_gradient cursor-pointer"
+                        onClick={handleEdit}
+                    >
+                        Edit
+                    </p>
+                    <p
+                        className="font-inter text-sm orange_gradient cursor-pointer"
+                        onClick={handleDelete}
+                    >
+                        Delete
+                    </p>
+                </div>
+            )}
         </div>
     );
 };

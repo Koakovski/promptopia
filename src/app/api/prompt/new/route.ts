@@ -19,7 +19,6 @@ export const POST: NextApiHandler = async (req) => {
             status: 201,
         });
     } catch (error) {
-        console.log(error);
         return new Response(JSON.stringify("Failed to create a new prompt"), {
             status: 500,
         });
