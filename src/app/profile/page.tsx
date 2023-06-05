@@ -3,13 +3,17 @@
 import { Profile } from "@components";
 import { PostModel } from "@models";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const MyProfilePage = () => {
     const [posts, setPosts] = useState<PostModel[]>([]);
     const { data: session } = useSession();
+    const router = useRouter();
 
-    const handleEdit = (post: PostModel) => {};
+    const handleEdit = (post: PostModel) => {
+        router.push(`/update-prompt?id=${post.id}`);
+    };
 
     const handleDelete = async (post: PostModel) => {};
 
@@ -26,7 +30,7 @@ const MyProfilePage = () => {
         };
 
         fetchPosts();
-    }, []);
+    }, [session]);
 
     return (
         <Profile
