@@ -19,13 +19,10 @@ const handler = NextAuth({
                 });
 
                 if (databaseUser) {
-                    session.user = {
-                        email: databaseUser.email,
-                        name: databaseUser.username,
-                        image: databaseUser.image,
-                    };
+                    session.user.id = databaseUser.id;
                 }
             }
+
             return session;
         },
         async signIn({ profile }) {

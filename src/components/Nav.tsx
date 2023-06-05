@@ -57,7 +57,10 @@ export const Nav: FC = () => {
                         </button>
                         <Link href="/profile">
                             <Image
-                                src="/assets/images/logo.svg"
+                                src={
+                                    session?.user.image ||
+                                    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                                }
                                 alt="profile"
                                 width={37}
                                 height={37}
@@ -73,7 +76,7 @@ export const Nav: FC = () => {
                                     type="button"
                                     key={provider.name}
                                     onClick={() => signIn(provider.id)}
-                                    className="btn_black"
+                                    className="black_btn"
                                 >
                                     Sign In
                                 </button>
@@ -132,7 +135,7 @@ export const Nav: FC = () => {
                                     type="button"
                                     key={provider.name}
                                     onClick={() => signIn(provider.id)}
-                                    className="btn_black"
+                                    className="black_btn"
                                 >
                                     Sign In
                                 </button>

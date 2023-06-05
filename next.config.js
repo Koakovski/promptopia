@@ -7,6 +7,9 @@ const nextConfig = {
         NEXTAUTH_URL_INTERNAL: process.env.NEXTAUTH_URL_INTERNAL,
         NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     },
+    images: {
+        domains: ["lh3.googleusercontent.com", "cdn.pixabay.com"],
+    },
 };
 
 module.exports = nextConfig;
