@@ -1,7 +1,7 @@
-import { PrismaClient } from "@prisma/client";
+import { getDatabaseConnection } from "@utils";
 import { NextApiHandler } from "next";
 
-const prisma = new PrismaClient();
+const prisma = getDatabaseConnection();
 
 export const GET: NextApiHandler = async (_, { params }) => {
     try {

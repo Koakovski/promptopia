@@ -1,7 +1,7 @@
-import { PrismaClient } from "@prisma/client";
+import { getDatabaseConnection } from "@utils";
 import { NextApiHandler } from "next";
 
-const prisma = new PrismaClient();
+const prisma = getDatabaseConnection();
 
 export const GET: NextApiHandler = async (_, { params }) => {
     try {
@@ -72,6 +72,10 @@ export const DELETE: NextApiHandler = async (_, { params }) => {
         const { id } = params;
 
         await prisma.post.delete({ where: { id } });
+
+        return new Response(undefined, {
+            status: 204,
+        });
     } catch (error) {
         return new Response("Fail", {
             status: 500,
