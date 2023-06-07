@@ -10,7 +10,6 @@ const UpdatePromptPage = () => {
 
     const [isSubmting, setIsSubmeting] = useState(false);
     const [post, setPost] = useState<PostData>({ prompt: "", tag: "" });
-    const { data: session } = useSession();
 
     const searchParams = useSearchParams();
     const promptId = searchParams.get("id");
@@ -24,7 +23,6 @@ const UpdatePromptPage = () => {
             const response = await fetch(`/api/prompt/${promptId}`, {
                 method: "PATCH",
                 body: JSON.stringify({
-                    authorId: session?.user?.id,
                     prompt: post.prompt,
                     tag: post.tag,
                 }),
