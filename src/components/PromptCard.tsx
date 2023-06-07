@@ -7,7 +7,7 @@ import { FC, useState } from "react";
 
 interface PromptCardProps {
     post: PostModel;
-    handleTagClick?: (tag: string) => void;
+    handleTagClick?: (post: PostModel) => void;
     handleEdit?: () => void;
     handleDelete?: () => void;
 }
@@ -69,9 +69,9 @@ export const PromptCard: FC<PromptCardProps> = ({
             <p className="my-4 font-satoshi text-sm text-gray-700">{post.prompt}</p>
             <p
                 className="font-inter text-sm blue_gradient cursor-pointer"
-                onClick={() => handleTagClick?.(post.tag)}
+                onClick={() => handleTagClick?.(post)}
             >
-                {post.tag}
+                #{post.tag}
             </p>
             {session?.user?.id === post.author.id && pathName === "/profile" && (
                 <div className="mt-5 flex-center gap-4 border-t border-gray-100 pt-3">

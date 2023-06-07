@@ -4,7 +4,7 @@ import { PromptCard } from "./PromptCard";
 
 interface PromptCardListProps {
     data: PostModel[];
-    handleTagClick?: (tag: string) => void;
+    handleTagClick?: (post: PostModel) => void;
 }
 
 export const PromptCardList: FC<PromptCardListProps> = ({ data, handleTagClick }) => {

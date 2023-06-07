@@ -11,20 +11,30 @@ export const Feed: FC = () => {
         setSearchText(event.target.value);
     };
 
+    const handleClickTag = (post: PostModel) => {
+        setSearchText(post.tag);
+    };
+
     useEffect(() => {
         const fetchPosts = async () => {
-            const response = await fetch("/api/prompt", { method: "GET" });
+            let url = "/api/prompt";
+            if (searchText !== "") url += `?search=${searchText}`;
+
+            const response = await fetch(url, { method: "GET" });
             const data = await response.json();
 
             setPosts(data);
         };
 
         fetchPosts();
-    }, []);
+    }, [searchText]);
 
     return (
         <section className="feed">
-            <form className="relative w-full flex-center">
+            <form
+                onSubmit={(e) => e.preventDefault()}
+                className="relative w-full flex-center"
+            >
                 <input
                     type="text"
                     placeholder="Search for a tag or username"
@@ -34,7 +44,7 @@ export const Feed: FC = () => {
                     className="search_input peer"
                 />
             </form>
-            <PromptCardList data={posts} handleTagClick={(tag: string) => {}} />
+            <PromptCardList data={posts} handleTagClick={handleClickTag} />
         </section>
     );
 };

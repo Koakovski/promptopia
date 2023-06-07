@@ -25,9 +25,10 @@ export const Form: FC<FormProps> = ({
     };
 
     const setTag = (event: ChangeEvent<HTMLInputElement>) => {
+        const formatedTag = event.target.value.replace(/#/g, "");
         setPost((prevState) => ({
             ...prevState,
-            tag: event.target.value,
+            tag: formatedTag,
         }));
     };
 
