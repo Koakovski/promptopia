@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ChangeEvent, Dispatch, FC, FormEvent, SetStateAction } from "react";
 
 interface FormProps {
-    type: "Create";
+    type: "Create" | "Edit";
     post: PostData;
     setPost: Dispatch<SetStateAction<PostData>>;
     isSubmiting: boolean;

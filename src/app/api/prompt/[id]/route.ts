@@ -33,7 +33,7 @@ export const GET: NextApiHandler = async (_, { params }) => {
 
 export const PATCH: NextApiHandler = async (req, { params }) => {
     try {
-        const { authorId, prompt, tag } = await req.json();
+        const { prompt, tag } = await req.json();
         const { id } = params;
 
         const databasePost = await prisma.post.findFirst({
@@ -53,7 +53,7 @@ export const PATCH: NextApiHandler = async (req, { params }) => {
                 tag: tag ?? databasePost.tag,
             },
             where: {
-                id: authorId,
+                id: id,
             },
         });
 
