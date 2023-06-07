@@ -1,15 +1,60 @@
 "use client";
 
 import { Profile } from "@components";
-import { PostModel } from "@models";
+import { PostModel, UserModel } from "@models";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const MyProfilePage = () => {
     const [posts, setPosts] = useState<PostModel[]>([]);
     const { data: session } = useSession();
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const [userData, setUserData] = useState<UserModel>({
+        id: "",
+        username: "",
+        email: "",
+        image: "",
+    });
+
+    useEffect(() => {
+        const getUserData = async () => {
+            const setReponseAsUserData = async (response: Response) => {
+                const data = await response.json();
+                setUserData(data);
+            };
+
+            if (userData.id === "") {
+                const userId = searchParams.get("userId");
+
+                if (userId) {
+                    const response = await fetch(`/api/user/${userId}`, {
+                        method: "GET",
+                    });
+
+                    if (response.ok) {
+                        await setReponseAsUserData(response);
+                    } else {
+                        const userId = session?.user?.id;
+                        if (userId) {
+                            const response = await fetch(`/api/user/${userId}`, {
+                                method: "GET",
+                            });
+
+                            if (response.ok) {
+                                await setReponseAsUserData(response);
+                            } else {
+                                router.push("/");
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        getUserData();
+    }, [searchParams, session]);
 
     const handleEdit = (post: PostModel) => {
         router.push(`/update-prompt?id=${post.id}`);
@@ -31,23 +76,20 @@ const MyProfilePage = () => {
 
     useEffect(() => {
         const fetchPosts = async () => {
-            if (session?.user?.id) {
-                const response = await fetch(`/api/user/${session.user.id}/posts`, {
-                    method: "GET",
-                });
-                const data = await response.json();
+            const response = await fetch(`/api/user/${userData.id}/posts`, {
+                method: "GET",
+            });
+            const data = await response.json();
 
-                setPosts(data);
-            }
+            setPosts(data);
         };
 
-        fetchPosts();
-    }, [session]);
+        if (userData.id !== "") fetchPosts();
+    }, [userData]);
 
     return (
         <Profile
-            name="My"
-            desc="Welcome to your personalized profile page"
+            user={userData}
             data={posts}
             handleEdit={handleEdit}
             handleDelete={handleDelete}

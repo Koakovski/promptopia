@@ -1,5 +1,5 @@
 "use client";
-import { PostModel } from "@models";
+import { PostModel, UserModel } from "@models";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -10,6 +10,7 @@ interface PromptCardProps {
     handleTagClick?: (post: PostModel) => void;
     handleEdit?: () => void;
     handleDelete?: () => void;
+    handleAuthorClick?: (author: UserModel) => void;
 }
 
 export const PromptCard: FC<PromptCardProps> = ({
@@ -17,6 +18,7 @@ export const PromptCard: FC<PromptCardProps> = ({
     handleTagClick,
     handleEdit,
     handleDelete,
+    handleAuthorClick,
 }) => {
     const [copiedValue, setCopiedValue] = useState<string>("");
 
@@ -33,7 +35,10 @@ export const PromptCard: FC<PromptCardProps> = ({
     return (
         <div className="prompt_card">
             <div className="flex justify-between items-start gap-5">
-                <div className="flex-1 flex justify-start items-center gap-3 cursor-pointer">
+                <div
+                    className="flex-1 flex justify-start items-center gap-3 cursor-pointer"
+                    onClick={() => handleAuthorClick?.(post.author)}
+                >
                     <Image
                         src={post.author.image}
                         alt="author image"
